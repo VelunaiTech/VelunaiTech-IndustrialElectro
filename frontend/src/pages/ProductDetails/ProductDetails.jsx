@@ -1,7 +1,7 @@
 import "./ProductDetails.css";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { getProduct } from "../../services/productService";
 
@@ -12,6 +12,7 @@ function ProductDetails() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState("");
+
 
     useEffect(() => {
 
@@ -24,18 +25,26 @@ function ProductDetails() {
                 setProduct(data);
 
                 if (data.images && data.images.length > 0) {
-                    setSelectedImage(data.images[0].image);
+
+                    setSelectedImage(
+                        data.images[0].image
+                    );
+
                 }
 
             } catch (error) {
 
-                console.error("Error loading product:", error);
+                console.error(
+                    "Error loading product:",
+                    error
+                );
 
             } finally {
 
                 setLoading(false);
 
             }
+
         }
 
         fetchProduct();
@@ -43,21 +52,45 @@ function ProductDetails() {
     }, [id]);
 
 
+    /* =========================================================
+       LOADING
+    ========================================================= */
+
     if (loading) {
+
         return (
+
             <section className="product-loading">
-                <h2>Loading Product...</h2>
+
+                <h2>
+                    Loading Product...
+                </h2>
+
             </section>
+
         );
+
     }
 
 
+    /* =========================================================
+       PRODUCT NOT FOUND
+    ========================================================= */
+
     if (!product) {
+
         return (
+
             <section className="product-loading">
-                <h2>Product Not Found</h2>
+
+                <h2>
+                    Product Not Found
+                </h2>
+
             </section>
+
         );
+
     }
 
 
@@ -67,14 +100,22 @@ function ProductDetails() {
 
             <div className="container">
 
-                {/* ================= PRODUCT ================= */}
+
+                {/* =================================================
+                   PRODUCT
+                ================================================= */}
 
                 <div className="product-layout">
 
 
-                    {/* ================= GALLERY ================= */}
+                    {/* =================================================
+                       GALLERY
+                    ================================================= */}
 
                     <div className="gallery">
+
+
+                        {/* ================= MAIN IMAGE ================= */}
 
                         <div className="main-image">
 
@@ -88,13 +129,17 @@ function ProductDetails() {
                             ) : (
 
                                 <div className="no-image">
+
                                     No Image Available
+
                                 </div>
 
                             )}
 
                         </div>
 
+
+                        {/* ================= THUMBNAILS ================= */}
 
                         {product.images &&
                             product.images.length > 0 && (
@@ -113,7 +158,9 @@ function ProductDetails() {
                                                     : "thumbnail"
                                             }
                                             onClick={() =>
-                                                setSelectedImage(img.image)
+                                                setSelectedImage(
+                                                    img.image
+                                                )
                                             }
                                         />
 
@@ -126,30 +173,47 @@ function ProductDetails() {
                     </div>
 
 
-                    {/* ================= PRODUCT INFORMATION ================= */}
+                    {/* =================================================
+                       PRODUCT INFORMATION
+                    ================================================= */}
 
                     <div className="product-info">
 
+
+                        {/* ================= BRAND ================= */}
+
                         <span className="brand">
+
                             {product.brand}
+
                         </span>
 
 
+                        {/* ================= NAME ================= */}
+
                         <h1>
+
                             {product.name}
+
                         </h1>
 
+
+                        {/* ================= CATEGORY ================= */}
 
                         <p className="category">
 
                             Category:
 
                             <span>
+
                                 {product.category?.name}
+
                             </span>
 
                         </p>
 
+
+                        {/* ================= PRICE ================= */}
 
                         <div className="price">
 
@@ -157,6 +221,8 @@ function ProductDetails() {
 
                         </div>
 
+
+                        {/* ================= DESCRIPTION ================= */}
 
                         <p className="description">
 
@@ -169,7 +235,9 @@ function ProductDetails() {
                 </div>
 
 
-                {/* ================= RELATED PRODUCTS ================= */}
+                {/* =================================================
+                   RELATED PRODUCTS
+                ================================================= */}
 
                 {product.related_products &&
                     product.related_products.length > 0 && (
@@ -177,6 +245,9 @@ function ProductDetails() {
                         <section className="related-products">
 
                             <div className="container">
+
+
+                                {/* ================= HEADING ================= */}
 
                                 <div className="related-heading">
 
@@ -195,72 +266,90 @@ function ProductDetails() {
                                 </div>
 
 
+                                {/* ================= GRID ================= */}
+
                                 <div className="related-grid">
 
-                                    {product.related_products.map((related) => (
+                                    {product.related_products.map(
+                                        (related) => (
 
-                                        <div
-                                            className="related-card"
-                                            key={related.id}
-                                        >
-
-                                            {/* ================= IMAGE ================= */}
-
-                                            <div className="related-image">
-
-                                                {related.image ? (
-
-                                                    <img
-                                                        src={related.image}
-                                                        alt={related.name}
-                                                    />
-
-                                                ) : (
-
-                                                    <div className="no-image">
-                                                        No Image Available
-                                                    </div>
-
-                                                )}
-
-                                            </div>
+                                            <div
+                                                className="related-card"
+                                                key={related.id}
+                                            >
 
 
-                                            {/* ================= CONTENT ================= */}
+                                                {/* ================= IMAGE ================= */}
 
-                                            <div className="related-content">
+                                                <div className="related-image">
 
-                                                <span className="related-brand">
-                                                    {related.brand}
-                                                </span>
+                                                    {related.image ? (
 
+                                                        <img
+                                                            src={related.image}
+                                                            alt={related.name}
+                                                        />
 
-                                                <h3>
-                                                    {related.name}
-                                                </h3>
+                                                    ) : (
 
+                                                        <div className="no-image">
 
-                                                <div className="related-price">
-                                                    ₹ {related.price}
+                                                            No Image Available
+
+                                                        </div>
+
+                                                    )}
+
                                                 </div>
 
 
-                                                <button
-                                                    type="button"
-                                                    className="view-product-btn"
-                                                    onClick={() =>
-                                                        window.location.href =
-                                                            `/product/${related.id}`
-                                                    }
-                                                >
-                                                    View Product
-                                                </button>
+                                                {/* ================= CONTENT ================= */}
+
+                                                <div className="related-content">
+
+
+                                                    {/* ================= BRAND ================= */}
+
+                                                    <span className="related-brand">
+
+                                                        {related.brand}
+
+                                                    </span>
+
+
+                                                    {/* ================= NAME ================= */}
+
+                                                    <h3>
+
+                                                        {related.name}
+
+                                                    </h3>
+
+
+                                                    {/* ================= PRICE ================= */}
+
+                                                    <div className="related-price">
+
+                                                        ₹ {related.price}
+
+                                                    </div>
+
+
+                                                    {/* ================= VIEW PRODUCT ================= */}
+
+                                                    <Link
+                                                        to={`/product/${related.id}`}
+                                                        className="view-product-btn"
+                                                    >
+                                                        View Product
+                                                    </Link>
+
+                                                </div>
 
                                             </div>
 
-                                        </div>
-
-                                    ))}
+                                        )
+                                    )}
 
                                 </div>
 
@@ -275,6 +364,7 @@ function ProductDetails() {
         </section>
 
     );
+
 }
 
 export default ProductDetails;

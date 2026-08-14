@@ -1,46 +1,116 @@
+/* =========================================================
+   PRODUCTS PAGE
+========================================================= */
+
 .products-page {
     min-height: 100vh;
+
     background: #f5f7fa;
+
     padding: 70px 0;
 }
+
+
+/* =========================================================
+   PRODUCTS HEADING
+========================================================= */
 
 .products-heading {
     margin-bottom: 45px;
 }
 
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
 .products-eyebrow {
     display: inline-block;
+
     color: #b77900;
+
     font-size: 13px;
+
     font-weight: 800;
+
     letter-spacing: 0.14em;
+
     margin-bottom: 12px;
 }
 
+
+/* =========================================================
+   MAIN HEADING
+========================================================= */
+
 .products-heading h1 {
     margin: 0 0 12px;
+
     color: #0f1a2e;
+
     font-size: clamp(2.2rem, 4vw, 3.5rem);
+
     font-weight: 800;
 }
 
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
 .products-heading p {
     max-width: 700px;
+
     margin: 0;
+
     color: #64748b;
+
     font-size: 1.05rem;
+
     line-height: 1.7;
 }
 
+
+/* =========================================================
+   PRODUCTS LAYOUT
+========================================================= */
+
 .products-layout {
     display: grid;
+
     grid-template-columns: 290px minmax(0, 1fr);
+
     gap: 35px;
+
     align-items: start;
 }
 
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
 @media (max-width: 991px) {
+
     .products-layout {
         grid-template-columns: 1fr;
     }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .products-page {
+        padding: 45px 0;
+    }
+
+    .products-heading {
+        margin-bottom: 30px;
+    }
+
+    .products-heading p {
+        font-size: 0.95rem;
+    }
+
 }

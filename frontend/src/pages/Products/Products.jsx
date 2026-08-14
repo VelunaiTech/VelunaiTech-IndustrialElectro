@@ -12,7 +12,7 @@ import { getCategories } from "../../services/categoryService";
 
 function Products() {
 
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -25,6 +25,10 @@ function Products() {
 
     const [searchTerm, setSearchTerm] = useState("");
 
+
+    /* =========================================================
+       LOAD PRODUCTS AND CATEGORIES
+    ========================================================= */
 
     useEffect(() => {
 
@@ -59,6 +63,51 @@ function Products() {
 
 
     /* =========================================================
+       SYNC URL CATEGORY WITH SELECTED CATEGORY
+    ========================================================= */
+
+    useEffect(() => {
+
+        const categoryFromUrl =
+            searchParams.get("category");
+
+        if (categoryFromUrl) {
+
+            setSelectedCategory(categoryFromUrl);
+
+        } else {
+
+            setSelectedCategory("all");
+
+        }
+
+    }, [searchParams]);
+
+
+    /* =========================================================
+       CATEGORY SELECTION
+    ========================================================= */
+
+    const handleCategoryChange = (categoryId) => {
+
+        setSelectedCategory(String(categoryId));
+
+        if (categoryId === "all") {
+
+            setSearchParams({});
+
+        } else {
+
+            setSearchParams({
+                category: String(categoryId)
+            });
+
+        }
+
+    };
+
+
+    /* =========================================================
        FILTER PRODUCTS
     ========================================================= */
 
@@ -67,7 +116,8 @@ function Products() {
         const matchCategory =
             selectedCategory === "all"
                 ? true
-                : product.category?.id === Number(selectedCategory);
+                : product.category?.id ===
+                  Number(selectedCategory);
 
 
         const name =
@@ -95,9 +145,14 @@ function Products() {
     });
 
 
+    /* =========================================================
+       RENDER
+    ========================================================= */
+
     return (
 
         <>
+
             <Header />
 
 
@@ -144,7 +199,7 @@ function Products() {
                         <ProductSidebar
                             categories={categories}
                             selectedCategory={selectedCategory}
-                            setSelectedCategory={setSelectedCategory}
+                            setSelectedCategory={handleCategoryChange}
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
                         />
@@ -168,7 +223,6 @@ function Products() {
         </>
 
     );
-
 }
 
 export default Products;

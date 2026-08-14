@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from .models import Product, ProductImage
-from categories.models import Category
 from categories.serializers import CategorySerializer
 
 
@@ -9,7 +8,10 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = ["id", "image"]
+        fields = [
+            "id",
+            "image",
+        ]
 
 
 class RelatedProductSerializer(serializers.ModelSerializer):
@@ -18,6 +20,7 @@ class RelatedProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
+
         fields = [
             "id",
             "name",
@@ -30,17 +33,24 @@ class RelatedProductSerializer(serializers.ModelSerializer):
 
         image = obj.images.first()
 
-        if image:
-            return self.context["request"].build_absolute_uri(
+        if not image:
+            return None
+
+        request = self.context.get("request")
+
+        if request:
+            return request.build_absolute_uri(
                 image.image.url
             )
 
-        return None
+        return image.image.url
 
 
 class ProductSerializer(serializers.ModelSerializer):
 
-    category = CategorySerializer(read_only=True)
+    category = CategorySerializer(
+        read_only=True
+    )
 
     images = ProductImageSerializer(
         many=True,
@@ -50,6 +60,7 @@ class ProductSerializer(serializers.ModelSerializer):
     related_products = serializers.SerializerMethodField()
 
     class Meta:
+
         model = Product
 
         fields = [
