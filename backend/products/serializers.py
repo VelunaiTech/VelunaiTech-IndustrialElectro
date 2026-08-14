@@ -1,55 +1,51 @@
 from rest_framework import serializers
 
 from .models import Product, ProductImage
+from categories.models import Category
+from categories.serializers import CategorySerializer
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        fields = [
-            "id",
-            "image",
-        ]
+        fields = ["id", "image"]
 
 
 class RelatedProductSerializer(serializers.ModelSerializer):
 
-    images = ProductImageSerializer(
-        many=True,
-        read_only=True
-    )
-
-    category = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-
         fields = [
             "id",
             "name",
             "brand",
             "price",
-            "category",
-            "images",
+            "image",
         ]
 
-    def get_category(self, obj):
-        return {
-            "id": obj.category.id,
-            "name": obj.category.name,
-            "slug": obj.category.slug,
-        }
+    def get_image(self, obj):
+
+        image = obj.images.first()
+
+        if image:
+            return self.context["request"].build_absolute_uri(
+                image.image.url
+            )
+
+        return None
 
 
 class ProductSerializer(serializers.ModelSerializer):
+
+    category = CategorySerializer(read_only=True)
 
     images = ProductImageSerializer(
         many=True,
         read_only=True
     )
-
-    category = serializers.SerializerMethodField()
 
     related_products = serializers.SerializerMethodField()
 
@@ -67,25 +63,13 @@ class ProductSerializer(serializers.ModelSerializer):
             "related_products",
         ]
 
-    def get_category(self, obj):
-
-        return {
-            "id": obj.category.id,
-            "name": obj.category.name,
-            "slug": obj.category.slug,
-        }
-
     def get_related_products(self, obj):
 
-        products = (
-            Product.objects
-            .filter(
-                category=obj.category,
-                is_active=True
-            )
-            .exclude(id=obj.id)
-            .prefetch_related("images")
-            .order_by("-created_at")[:8]
+        products = Product.objects.filter(
+            category=obj.category,
+            is_active=True
+        ).exclude(
+            id=obj.id
         )
 
         return RelatedProductSerializer(
