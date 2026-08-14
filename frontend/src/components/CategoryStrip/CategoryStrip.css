@@ -1,0 +1,41 @@
+.category-strip{
+
+    padding:90px 0;
+
+    background:#f8fafc;
+
+}
+
+.section-header{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+.section-header h2{
+
+    font-size:42px;
+
+    margin-bottom:15px;
+
+}
+
+.section-header p{
+
+    color:#64748b;
+
+}
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:
+
+        repeat(auto-fit,minmax(280px,1fr));
+
+    gap:35px;
+
+}
