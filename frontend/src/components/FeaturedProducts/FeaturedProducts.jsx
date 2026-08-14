@@ -1,96 +1,163 @@
-import { useEffect, useState } from "react";
 import "./FeaturedProducts.css";
+
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { getProducts } from "../../services/productService";
 
-import ProductCard from "../ProductCard/ProductCard";
-
 function FeaturedProducts() {
-
     const [products, setProducts] = useState([]);
-
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
-        async function loadProducts() {
-
+        async function fetchProducts() {
             try {
-
                 const data = await getProducts();
 
-                setProducts(data);
+                console.log("Featured products:", data);
 
-            }
+                // Show only the first 6 products
+                setProducts(data.slice(0, 6));
 
-            catch (err) {
-
-                console.error(err);
-
-            }
-
-            finally {
-
+            } catch (error) {
+                console.error(
+                    "Failed to load featured products:",
+                    error
+                );
+            } finally {
                 setLoading(false);
-
             }
-
         }
 
-        loadProducts();
-
+        fetchProducts();
     }, []);
 
-    if (loading) {
-
-        return <h2>Loading Products...</h2>;
-
-    }
-
     return (
-
         <section className="featured-products">
 
             <div className="container">
 
-                <div className="section-heading">
+                <div className="featured-header">
 
-                    <h2>Featured Products</h2>
+                    <div>
 
-                    <p>
+                        <span className="section-label">
+                            OUR PRODUCTS
+                        </span>
 
-                        Premium industrial electrical components
+                        <h2>
+                            Featured Products
+                        </h2>
 
-                    </p>
+                        <p>
+                            Explore our range of industrial
+                            automation and electrical products.
+                        </p>
 
-                </div>
+                    </div>
 
-                <div className="products-grid">
-
-                    {
-
-                        products.map(product => (
-
-                            <ProductCard
-
-                                key={product.id}
-
-                                product={product}
-
-                            />
-
-                        ))
-
-                    }
+                    <Link
+                        to="/products"
+                        className="view-all-products"
+                    >
+                        View All Products
+                    </Link>
 
                 </div>
+
+                {loading ? (
+
+                    <div className="featured-loading">
+                        Loading products...
+                    </div>
+
+                ) : products.length === 0 ? (
+
+                    <div className="featured-empty">
+                        No products available.
+                    </div>
+
+                ) : (
+
+                    <div className="featured-grid">
+
+                        {products.map((product) => {
+
+                            const image =
+                                product.images &&
+                                product.images.length > 0
+                                    ? product.images[0].image
+                                    : null;
+
+                            return (
+
+                                <article
+                                    className="featured-card"
+                                    key={product.id}
+                                >
+
+                                    <Link
+                                        to={`/product/${product.id}`}
+                                        className="featured-image"
+                                    >
+
+                                        {image ? (
+
+                                            <img
+                                                src={image}
+                                                alt={product.name}
+                                            />
+
+                                        ) : (
+
+                                            <div className="featured-no-image">
+                                                No Image
+                                            </div>
+
+                                        )}
+
+                                    </Link>
+
+                                    <div className="featured-content">
+
+                                        <span className="featured-brand">
+                                            {product.brand}
+                                        </span>
+
+                                        <h3>
+                                            {product.name}
+                                        </h3>
+
+                                        <div className="featured-bottom">
+
+                                            <span className="featured-price">
+                                                ₹ {product.price}
+                                            </span>
+
+                                            <Link
+                                                to={`/product/${product.id}`}
+                                                className="featured-view"
+                                            >
+                                                View
+                                            </Link>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            );
+                        })}
+
+                    </div>
+
+                )}
 
             </div>
 
         </section>
-
     );
-
 }
 
 export default FeaturedProducts;

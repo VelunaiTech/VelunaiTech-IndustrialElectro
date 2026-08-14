@@ -5,41 +5,70 @@ import ProductSidebar from "../../components/ProductSidebar/ProductSidebar";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { getProducts } from "../../services/productService";
 import { getCategories } from "../../services/categoryService";
 
 function Products() {
+
+    const [searchParams] = useSearchParams();
+
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
-    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [selectedCategory, setSelectedCategory] = useState(
+        searchParams.get("category") || "all"
+    );
+
     const [searchTerm, setSearchTerm] = useState("");
 
+
     useEffect(() => {
+
         const loadData = async () => {
+
             try {
+
                 const productsData = await getProducts();
                 const categoryData = await getCategories();
 
                 setProducts(productsData);
                 setCategories(categoryData);
+
             } catch (error) {
-                console.error("Failed to load products:", error);
+
+                console.error(
+                    "Failed to load products:",
+                    error
+                );
+
             } finally {
+
                 setLoading(false);
+
             }
+
         };
 
         loadData();
+
     }, []);
 
+
+    /* =========================================================
+       FILTER PRODUCTS
+    ========================================================= */
+
     const filteredProducts = products.filter((product) => {
+
         const matchCategory =
-            selectedCategory === "all" ||
-            product.category?.id === Number(selectedCategory);
+            selectedCategory === "all"
+                ? true
+                : product.category?.id === Number(selectedCategory);
+
 
         const name =
             product.name?.toLowerCase() || "";
@@ -50,23 +79,36 @@ function Products() {
         const categoryName =
             product.category?.name?.toLowerCase() || "";
 
+
         const search =
             searchTerm.toLowerCase().trim();
+
 
         const matchSearch =
             name.includes(search) ||
             brand.includes(search) ||
             categoryName.includes(search);
 
+
         return matchCategory && matchSearch;
+
     });
 
+
     return (
+
         <>
             <Header />
 
+
             <main className="products-page">
+
                 <div className="container">
+
+
+                    {/* =================================================
+                       PRODUCTS HEADING
+                    ================================================= */}
 
                     <div className="products-heading">
 
@@ -74,9 +116,11 @@ function Products() {
                             INDUSTRIAL ELECTRICAL PRODUCTS
                         </span>
 
+
                         <h1>
                             Industrial Products
                         </h1>
+
 
                         <p>
                             Explore our range of industrial automation
@@ -85,7 +129,17 @@ function Products() {
 
                     </div>
 
+
+                    {/* =================================================
+                       PRODUCTS LAYOUT
+                    ================================================= */}
+
                     <div className="products-layout">
+
+
+                        {/* =================================================
+                           SIDEBAR
+                        ================================================= */}
 
                         <ProductSidebar
                             categories={categories}
@@ -95,6 +149,11 @@ function Products() {
                             setSearchTerm={setSearchTerm}
                         />
 
+
+                        {/* =================================================
+                           PRODUCT GRID
+                        ================================================= */}
+
                         <ProductGrid
                             products={filteredProducts}
                             loading={loading}
@@ -103,9 +162,13 @@ function Products() {
                     </div>
 
                 </div>
+
             </main>
+
         </>
+
     );
+
 }
 
 export default Products;
