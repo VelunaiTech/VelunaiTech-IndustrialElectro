@@ -1,23 +1,30 @@
 from django.contrib import admin
-from .models import Contact
+
+from .models import ContactInfo
 
 
-@admin.register(Contact)
-class ContactAdmin(admin.ModelAdmin):
+@admin.register(ContactInfo)
+class ContactInfoAdmin(admin.ModelAdmin):
+
     list_display = (
         "name",
+        "mobile",
         "email",
-        "subject",
-        "is_read",
-        "created_at",
+        "is_active",
+        "updated_at",
     )
 
     list_filter = (
-        "is_read",
+        "is_active",
     )
 
     search_fields = (
         "name",
+        "mobile",
         "email",
-        "subject",
+        "address",
+    )
+
+    ordering = (
+        "-updated_at",
     )

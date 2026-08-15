@@ -316,16 +316,40 @@
 
 
 /* =========================================================
-   RELATED GRID
+   RELATED CAROUSEL
+========================================================= */
+
+.related-carousel {
+    position: relative;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   RELATED GRID / HORIZONTAL SCROLL
 ========================================================= */
 
 .related-grid {
-    display: grid;
+    display: flex;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    gap: 20px;
 
-    gap: 30px;
+    width: 100%;
+
+    overflow-x: auto;
+
+    scroll-behavior: smooth;
+
+    scroll-snap-type: x mandatory;
+
+    padding: 5px 2px 20px;
+
+    scrollbar-width: none;
+}
+
+.related-grid::-webkit-scrollbar {
+    display: none;
 }
 
 
@@ -334,6 +358,16 @@
 ========================================================= */
 
 .related-card {
+    flex: 0 0 calc(
+        (100% - 20px) / 2
+    );
+
+    width: calc(
+        (100% - 20px) / 2
+    );
+
+    min-height: 390px;
+
     background: #ffffff;
 
     border: 1px solid #e2e8f0;
@@ -348,6 +382,8 @@
     transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
+
+    scroll-snap-align: start;
 }
 
 .related-card:hover {
@@ -359,13 +395,13 @@
 
 
 /* =========================================================
-   RELATED PRODUCT IMAGE
+   RELATED IMAGE
 ========================================================= */
 
 .related-image {
     width: 100%;
 
-    height: 260px;
+    height: 190px;
 
     background: #f1f5f9;
 
@@ -400,13 +436,15 @@
    RELATED NO IMAGE
 ========================================================= */
 
-.related-image .no-image {
+.related-no-image {
     width: 100%;
+
     height: 100%;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     color: #64748b;
@@ -414,6 +452,8 @@
     font-size: 15px;
 
     font-weight: 600;
+
+    text-align: center;
 }
 
 
@@ -422,7 +462,11 @@
 ========================================================= */
 
 .related-content {
-    padding: 28px;
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
 }
 
 
@@ -433,11 +477,11 @@
 .related-brand {
     display: block;
 
-    margin-bottom: 14px;
+    margin-bottom: 8px;
 
     color: #2563eb;
 
-    font-size: 15px;
+    font-size: 13px;
 
     font-weight: 700;
 
@@ -456,7 +500,7 @@
 
     color: #0f172a;
 
-    font-size: 24px;
+    font-size: 21px;
 
     line-height: 1.35;
 
@@ -469,11 +513,11 @@
 ========================================================= */
 
 .related-price {
-    margin-top: 18px;
+    margin-top: 14px;
 
     color: #f59e0b;
 
-    font-size: 24px;
+    font-size: 21px;
 
     line-height: 1.2;
 
@@ -486,11 +530,15 @@
 ========================================================= */
 
 .view-product-btn {
-    width: 100%;
+    align-self: flex-start;
 
-    margin-top: 22px;
+    width: auto;
 
-    padding: 15px;
+    min-width: 150px;
+
+    margin-top: 16px;
+
+    padding: 12px 20px;
 
     border: none;
 
@@ -510,6 +558,14 @@
         background 0.3s ease,
         color 0.3s ease,
         transform 0.2s ease;
+
+    text-decoration: none;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
 }
 
 .view-product-btn:hover {
@@ -518,6 +574,82 @@
     color: #0f172a;
 
     transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   RELATED ARROWS
+========================================================= */
+
+.related-arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 5;
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #0f172a;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.12);
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.related-arrow:hover:not(:disabled) {
+    background: #f59e0b;
+
+    color: #0f172a;
+
+    transform:
+        translateY(-50%)
+        scale(1.05);
+}
+
+.related-arrow:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+.related-arrow-left {
+    left: -20px;
+}
+
+.related-arrow-right {
+    right: -20px;
 }
 
 
@@ -566,10 +698,32 @@
         padding: 0;
     }
 
-    .related-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+    .related-card {
+        flex-basis: calc(
+            (100% - 20px) / 2
+        );
+
+        width: calc(
+            (100% - 20px) / 2
+        );
     }
+
+    .related-arrow {
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 17px;
+    }
+
+    .related-arrow-left {
+        left: -10px;
+    }
+
+    .related-arrow-right {
+        right: -10px;
+    }
+
 }
 
 
@@ -577,7 +731,7 @@
    MOBILE
 ========================================================= */
 
-@media (max-width: 650px) {
+@media (max-width: 576px) {
 
     .product-details {
         padding: 25px 0 60px;
@@ -601,43 +755,75 @@
         font-size: 30px;
     }
 
+
+    /* ================= RELATED PRODUCTS ================= */
+
     .related-products {
         margin-top: 60px;
 
-        padding: 55px 0;
+        padding: 45px 0;
     }
 
     .related-heading {
-        margin-bottom: 30px;
+        margin-bottom: 22px;
     }
 
     .related-heading h2 {
-        font-size: 32px;
+        font-size: 26px;
     }
 
     .related-heading p {
         font-size: 15px;
     }
 
-    .related-grid {
-        grid-template-columns: 1fr;
 
-        gap: 20px;
+    /* ================= RELATED CARD ================= */
+
+    .related-card {
+        flex-basis: 235px;
+
+        width: 235px;
+
+        min-height: 360px;
     }
+
+
+    /* ================= RELATED IMAGE ================= */
 
     .related-image {
-        height: 220px;
+        height: 145px;
     }
 
+
+    /* ================= RELATED CONTENT ================= */
+
     .related-content {
-        padding: 22px;
+        padding: 17px;
     }
 
     .related-content h3 {
-        font-size: 20px;
+        font-size: 17px;
     }
 
     .related-price {
-        font-size: 21px;
+        font-size: 17px;
     }
+
+
+    /* ================= RELATED ARROWS ================= */
+
+    .related-arrow {
+        width: 36px;
+
+        height: 36px;
+    }
+
+    .related-arrow-left {
+        left: -5px;
+    }
+
+    .related-arrow-right {
+        right: -5px;
+    }
+
 }

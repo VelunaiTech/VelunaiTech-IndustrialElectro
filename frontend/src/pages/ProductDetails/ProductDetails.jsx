@@ -1,6 +1,6 @@
 import "./ProductDetails.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { getProduct } from "../../services/productService";
@@ -13,10 +13,21 @@ function ProductDetails() {
     const [loading, setLoading] = useState(true);
     const [selectedImage, setSelectedImage] = useState("");
 
+    const relatedProductsRef = useRef(null);
+
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
 
     useEffect(() => {
 
         async function fetchProduct() {
+
+            setLoading(true);
+
+            setProduct(null);
+
+            setSelectedImage("");
 
             try {
 
@@ -50,6 +61,101 @@ function ProductDetails() {
         fetchProduct();
 
     }, [id]);
+
+
+    /* =========================================================
+       RELATED PRODUCTS CAROUSEL
+    ========================================================= */
+
+    const updateRelatedButtons = () => {
+
+        const container = relatedProductsRef.current;
+
+        if (!container) {
+            return;
+        }
+
+        setCanScrollLeft(
+            container.scrollLeft > 0
+        );
+
+        setCanScrollRight(
+            container.scrollLeft + container.clientWidth <
+            container.scrollWidth - 5
+        );
+
+    };
+
+
+    const scrollRelatedProducts = (direction) => {
+
+        const container = relatedProductsRef.current;
+
+        if (!container) {
+            return;
+        }
+
+        const card = container.querySelector(".related-card");
+
+        if (!card) {
+            return;
+        }
+
+        const cardWidth = card.offsetWidth;
+
+        const gap = 20;
+
+        const scrollAmount = cardWidth + gap;
+
+        container.scrollBy({
+
+            left:
+                direction === "left"
+                    ? -scrollAmount
+                    : scrollAmount,
+
+            behavior: "smooth"
+
+        });
+
+    };
+
+
+    /* =========================================================
+       RELATED PRODUCTS CAROUSEL INITIALIZATION
+    ========================================================= */
+
+    useEffect(() => {
+
+        const container = relatedProductsRef.current;
+
+        if (!container) {
+            return;
+        }
+
+        updateRelatedButtons();
+
+        const handleResize = () => {
+
+            updateRelatedButtons();
+
+        };
+
+        window.addEventListener(
+            "resize",
+            handleResize
+        );
+
+        return () => {
+
+            window.removeEventListener(
+                "resize",
+                handleResize
+            );
+
+        };
+
+    }, [product]);
 
 
     /* =========================================================
@@ -266,90 +372,137 @@ function ProductDetails() {
                                 </div>
 
 
-                                {/* ================= GRID ================= */}
+                                {/* ================= CAROUSEL ================= */}
 
-                                <div className="related-grid">
-
-                                    {product.related_products.map(
-                                        (related) => (
-
-                                            <div
-                                                className="related-card"
-                                                key={related.id}
-                                            >
+                                <div className="related-carousel">
 
 
-                                                {/* ================= IMAGE ================= */}
+                                    {/* ================= LEFT ARROW ================= */}
 
-                                                <div className="related-image">
-
-                                                    {related.image ? (
-
-                                                        <img
-                                                            src={related.image}
-                                                            alt={related.name}
-                                                        />
-
-                                                    ) : (
-
-                                                        <div className="no-image">
-
-                                                            No Image Available
-
-                                                        </div>
-
-                                                    )}
-
-                                                </div>
+                                    <button
+                                        type="button"
+                                        className="related-arrow related-arrow-left"
+                                        onClick={() =>
+                                            scrollRelatedProducts("left")
+                                        }
+                                        disabled={!canScrollLeft}
+                                        aria-label="Previous related products"
+                                    >
+                                        &#10094;
+                                    </button>
 
 
-                                                {/* ================= CONTENT ================= */}
+                                    {/* ================= RELATED PRODUCTS ================= */}
 
-                                                <div className="related-content">
+                                    <div
+                                        className="related-grid"
+                                        ref={relatedProductsRef}
+                                        onScroll={updateRelatedButtons}
+                                    >
 
+                                        {product.related_products.map(
+                                            (related) => (
 
-                                                    {/* ================= BRAND ================= */}
-
-                                                    <span className="related-brand">
-
-                                                        {related.brand}
-
-                                                    </span>
-
-
-                                                    {/* ================= NAME ================= */}
-
-                                                    <h3>
-
-                                                        {related.name}
-
-                                                    </h3>
+                                                <article
+                                                    className="related-card"
+                                                    key={related.id}
+                                                >
 
 
-                                                    {/* ================= PRICE ================= */}
+                                                    {/* ================= IMAGE ================= */}
 
-                                                    <div className="related-price">
+                                                    <div className="related-image">
 
-                                                        ₹ {related.price}
+                                                        {related.image ? (
+
+                                                            <img
+                                                                src={related.image}
+                                                                alt={related.name}
+                                                            />
+
+                                                        ) : (
+
+                                                            <div className="related-no-image">
+
+                                                                No Image Available
+
+                                                            </div>
+
+                                                        )}
 
                                                     </div>
 
 
-                                                    {/* ================= VIEW PRODUCT ================= */}
+                                                    {/* ================= CONTENT ================= */}
 
-                                                    <Link
-                                                        to={`/product/${related.id}`}
-                                                        className="view-product-btn"
-                                                    >
-                                                        View Product
-                                                    </Link>
+                                                    <div className="related-content">
 
-                                                </div>
 
-                                            </div>
+                                                        {/* ================= BRAND ================= */}
 
-                                        )
-                                    )}
+                                                        <span className="related-brand">
+
+                                                            {related.brand}
+
+                                                        </span>
+
+
+                                                        {/* ================= NAME ================= */}
+
+                                                        <h3>
+
+                                                            {related.name}
+
+                                                        </h3>
+
+
+                                                        {/* ================= PRICE ================= */}
+
+                                                        <div className="related-price">
+
+                                                            ₹{" "}
+
+                                                            {Number(
+                                                                related.price
+                                                            ).toLocaleString(
+                                                                "en-IN"
+                                                            )}
+
+                                                        </div>
+
+
+                                                        {/* ================= VIEW PRODUCT ================= */}
+
+                                                        <Link
+                                                            to={`/product/${related.id}`}
+                                                            className="view-product-btn"
+                                                        >
+                                                            View Product
+                                                        </Link>
+
+                                                    </div>
+
+                                                </article>
+
+                                            )
+                                        )}
+
+                                    </div>
+
+
+                                    {/* ================= RIGHT ARROW ================= */}
+
+                                    <button
+                                        type="button"
+                                        className="related-arrow related-arrow-right"
+                                        onClick={() =>
+                                            scrollRelatedProducts("right")
+                                        }
+                                        disabled={!canScrollRight}
+                                        aria-label="Next related products"
+                                    >
+                                        &#10095;
+                                    </button>
 
                                 </div>
 
