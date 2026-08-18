@@ -1,129 +1,342 @@
-/* ================= HEADER ================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header {
     background: #0f1a2e;
+
     position: sticky;
+
     top: 0;
+
     z-index: 999;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+
+    box-shadow:
+        0 3px 15px rgba(0, 0, 0, 0.20);
 }
 
+
+/* =========================================================
+   HEADER INNER
+========================================================= */
+
 .header-inner {
-    height: 85px;
+    min-height: 85px;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     gap: 40px;
 }
 
-/* ================= LOGO ================= */
+
+/* =========================================================
+   LOGO
+========================================================= */
 
 .logo {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
+    flex-shrink: 0;
 }
 
 .logo-icon {
     font-size: 32px;
+
     color: #fbbf24;
 }
 
 .logo-text h2 {
-    color: white;
+    margin: 0;
+
+    color: #ffffff;
+
     font-size: 28px;
+
+    font-weight: 800;
 }
 
 .logo-text span {
+    display: block;
+
+    margin-top: 3px;
+
     color: #94a3b8;
+
     font-size: 13px;
 }
 
-/* ================= NAVIGATION ================= */
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 .navigation {
     display: flex;
+
+    align-items: center;
+
     gap: 35px;
 }
 
 .navigation a {
-    color: white;
+    color: #ffffff;
+
     text-decoration: none;
+
+    font-size: 15px;
+
     font-weight: 600;
-    transition: 0.3s;
+
+    transition: color 0.25s ease;
 }
 
 .navigation a:hover {
     color: #fbbf24;
 }
 
-/* ================= RIGHT ================= */
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
 
 .header-right {
     display: flex;
+
     align-items: center;
+
     gap: 15px;
 }
 
-/* ================= LANGUAGE SWITCHER ================= */
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
 
 .lang-switcher select {
-    padding: 10px 15px;
+    height: 42px;
+
+    padding: 0 15px;
+
+    border: 1px solid #334155;
+
     border-radius: 30px;
+
+    outline: none;
+
     background: #1e293b;
-    color: white;
-    border: none;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    cursor: pointer;
 }
 
-/* ================= BUTTONS ================= */
+.lang-switcher select:focus {
+    border-color: #fbbf24;
+}
+
+
+/* =========================================================
+   COMMON BUTTON
+========================================================= */
 
 .theme-btn,
-.contact-btn,
-.request-btn {
+.request-btn,
+.contact-btn {
     border: none;
+
     border-radius: 40px;
-    padding: 12px 18px;
+
     display: flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 10px;
-    cursor: pointer;
+
+    font-family: inherit;
+
     font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
+
+
+/* =========================================================
+   THEME BUTTON
+========================================================= */
 
 .theme-btn {
-    width: 48px;
-    height: 48px;
-    justify-content: center;
+    width: 44px;
+
+    height: 44px;
+
+    padding: 0;
+
     background: #1e293b;
-    color: white;
+
+    color: #ffffff;
+
+    font-size: 16px;
 }
+
+.theme-btn:hover {
+    background: #334155;
+
+    color: #fbbf24;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   REQUEST BUTTON
+========================================================= */
 
 .request-btn {
+    min-height: 44px;
+
+    padding: 0 18px;
+
     background: #fbbf24;
+
+    color: #0f172a;
 }
+
+.request-btn:hover {
+    background: #f59e0b;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONTACT BUTTON
+========================================================= */
 
 .contact-btn {
+    min-height: 44px;
+
+    padding: 0 18px;
+
     background: #2563eb;
-    color: white;
+
+    color: #ffffff;
 }
 
-/* ================= RESPONSIVE ================= */
+.contact-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   DARK THEME HEADER
+========================================================= */
+
+[data-theme="dark"] .header {
+    background: #050914;
+}
+
+[data-theme="dark"] .lang-switcher select {
+    background: #111827;
+
+    border-color: #334155;
+
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .theme-btn {
+    background: #172033;
+
+    color: #fbbf24;
+}
+
+[data-theme="dark"] .theme-btn:hover {
+    background: #273449;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
 @media (max-width: 1200px) {
+
     .navigation {
         display: none;
     }
+
 }
 
+
 @media (max-width: 900px) {
+
     .header-inner {
-        flex-direction: column;
-        height: auto;
-        padding: 20px 0;
+        flex-wrap: wrap;
+
+        padding: 18px 0;
+
+        gap: 20px;
     }
 
     .header-right {
         flex-wrap: wrap;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .header-inner {
         justify-content: center;
     }
+
+    .logo-text h2 {
+        font-size: 23px;
+    }
+
+    .logo-text span {
+        font-size: 11px;
+    }
+
+    .header-right {
+        justify-content: center;
+    }
+
+    .request-btn span,
+    .contact-btn span {
+        display: none;
+    }
+
+    .request-btn,
+    .contact-btn {
+        width: 44px;
+
+        height: 44px;
+
+        padding: 0;
+    }
+
 }

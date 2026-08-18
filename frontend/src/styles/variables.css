@@ -1,0 +1,76 @@
+/* =========================================================
+   GLOBAL THEME VARIABLES
+========================================================= */
+
+:root {
+
+    /* ================= LIGHT THEME ================= */
+
+    --page-background: #f5f7fa;
+
+    --card-background: #ffffff;
+
+    --secondary-background: #f8fafc;
+
+    --image-background: #f1f5f9;
+
+    --primary-text: #0f1a2e;
+
+    --secondary-text: #64748b;
+
+    --muted-text: #94a3b8;
+
+    --border-color: #e2e8f0;
+
+    --input-border: #cbd5e1;
+
+    --dark-button: #0f1a2e;
+
+    --dark-button-text: #ffffff;
+
+    --accent: #fbbf24;
+
+    --accent-dark: #b77900;
+
+    --danger: #ef4444;
+
+    --shadow-color: rgba(15, 26, 46, 0.09);
+}
+
+
+/* =========================================================
+   DARK THEME
+========================================================= */
+
+[data-theme="dark"] {
+
+    --page-background: #080d16;
+
+    --card-background: #111827;
+
+    --secondary-background: #172033;
+
+    --image-background: #1a2435;
+
+    --primary-text: #f8fafc;
+
+    --secondary-text: #cbd5e1;
+
+    --muted-text: #94a3b8;
+
+    --border-color: #273449;
+
+    --input-border: #334155;
+
+    --dark-button: #fbbf24;
+
+    --dark-button-text: #0f172a;
+
+    --accent: #fbbf24;
+
+    --accent-dark: #fbbf24;
+
+    --danger: #f87171;
+
+    --shadow-color: rgba(0, 0, 0, 0.35);
+}

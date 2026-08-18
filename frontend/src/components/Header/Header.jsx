@@ -4,26 +4,43 @@ import { Link } from "react-router-dom";
 
 import {
     FaMoon,
+    FaSun,
     FaPhoneAlt,
     FaCamera,
     FaBolt
 } from "react-icons/fa";
 
+import { useTheme } from "../../context/ThemeContext";
+
+
 function Header() {
+
+    const {
+        theme,
+        toggleTheme
+    } = useTheme();
+
+
     return (
+
         <header className="header">
 
             <div className="container header-inner">
 
                 {/* ================= LOGO ================= */}
 
-                <div className="logo">
+                <Link
+                    to="/"
+                    className="logo"
+                >
 
                     <FaBolt className="logo-icon" />
 
                     <div className="logo-text">
 
-                        <h2>IndustrialElectro</h2>
+                        <h2>
+                            IndustrialElectro
+                        </h2>
 
                         <span>
                             Industrial Automation Solutions
@@ -31,7 +48,8 @@ function Header() {
 
                     </div>
 
-                </div>
+                </Link>
+
 
                 {/* ================= NAVIGATION ================= */}
 
@@ -55,11 +73,12 @@ function Header() {
 
                 </nav>
 
+
                 {/* ================= RIGHT SIDE ================= */}
 
                 <div className="header-right">
 
-                    {/* Language */}
+                    {/* LANGUAGE */}
 
                     <div className="lang-switcher">
 
@@ -77,21 +96,41 @@ function Header() {
 
                     </div>
 
-                    {/* Theme */}
+
+                    {/* THEME */}
 
                     <button
                         type="button"
                         className="theme-btn"
+                        onClick={toggleTheme}
+                        aria-label={
+                            theme === "light"
+                                ? "Switch to dark mode"
+                                : "Switch to light mode"
+                        }
+                        title={
+                            theme === "light"
+                                ? "Dark Mode"
+                                : "Light Mode"
+                        }
                     >
-                        <FaMoon />
+
+                        {theme === "light" ? (
+                            <FaMoon />
+                        ) : (
+                            <FaSun />
+                        )}
+
                     </button>
 
-                    {/* Request Material */}
+
+                    {/* REQUEST MATERIAL */}
 
                     <button
                         type="button"
                         className="request-btn"
                     >
+
                         <FaCamera />
 
                         <span>
@@ -100,17 +139,20 @@ function Header() {
 
                     </button>
 
-                    {/* Contact */}
+
+                    {/* CONTACT */}
 
                     <Link
                         to="/contact"
                         className="contact-btn"
                     >
+
                         <FaPhoneAlt />
 
                         <span>
                             Contact
                         </span>
+
                     </Link>
 
                 </div>
@@ -118,7 +160,10 @@ function Header() {
             </div>
 
         </header>
+
     );
+
 }
+
 
 export default Header;

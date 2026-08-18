@@ -1,63 +1,88 @@
-.product-grid{
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
 
-    display:grid;
+.product-grid {
 
-    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    display: grid;
 
-    gap:30px;
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(300px, 1fr)
+        );
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY STATE
+========================================================= */
+
+.product-grid-loading {
+
+    width: 100%;
+
+    min-height: 500px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color: var(--primary-text);
+}
+
+
+.product-grid-loading h2 {
+
+    font-size: 32px;
+
+    color: var(--primary-text);
+
+    margin-bottom: 15px;
+}
+
+
+.product-grid-loading p {
+
+    color: var(--secondary-text);
+
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .product-grid {
+
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(280px, 1fr)
+            );
+
+    }
 
 }
 
-.product-grid-loading{
 
-    width:100%;
+@media (max-width: 768px) {
 
-    min-height:500px;
+    .product-grid {
 
-    display:flex;
+        grid-template-columns: 1fr;
 
-    flex-direction:column;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-.product-grid-loading h2{
-
-    font-size:32px;
-
-    color:#0f172a;
-
-    margin-bottom:15px;
-
-}
-
-.product-grid-loading p{
-
-    color:#64748b;
-
-    font-size:16px;
-
-}
-
-@media(max-width:1200px){
-
-.product-grid{
-
-grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-
-}
-
-}
-
-@media(max-width:768px){
-
-.product-grid{
-
-grid-template-columns:1fr;
-
-}
+    }
 
 }

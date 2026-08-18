@@ -1,192 +1,264 @@
 /* =========================================================
    PRODUCT SIDEBAR
-   ========================================================= */
+========================================================= */
 
 .product-sidebar {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    width: 100%;
+
+    max-width: 290px;
+
+    background: var(--card-background);
+
+    border: 1px solid var(--border-color);
+
     border-radius: 16px;
+
     padding: 26px;
 
     position: sticky;
+
     top: 100px;
 
-    box-shadow: 0 8px 30px rgba(15, 26, 46, 0.07);
+    box-shadow:
+        0 8px 30px var(--shadow-color);
 
-    width: 100%;
+    color: var(--primary-text);
 }
 
 
 /* =========================================================
    SIDEBAR HEADER
-   ========================================================= */
+========================================================= */
 
 .sidebar-header {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     padding-bottom: 22px;
+
     margin-bottom: 25px;
 
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
 }
+
 
 .sidebar-header h2 {
     margin: 0;
 
-    color: #0f1a2e;
+    color: var(--primary-text);
 
     font-size: 22px;
+
     font-weight: 800;
 }
 
+
+/* =========================================================
+   CLEAR FILTERS
+========================================================= */
+
 .clear-filters {
     border: none;
+
     background: transparent;
 
-    color: #b77900;
+    color: var(--accent-dark);
+
+    font-family: inherit;
 
     font-size: 13px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
+
 .clear-filters:hover {
-    color: #92400e;
+    color: var(--accent);
 }
 
 
 /* =========================================================
    SIDEBAR SECTION
-   ========================================================= */
+========================================================= */
 
 .sidebar-section {
     margin-bottom: 30px;
 }
 
+
 .sidebar-section h3 {
     margin: 0 0 14px;
 
-    color: #1e293b;
+    color: var(--primary-text);
 
     font-size: 15px;
+
     font-weight: 800;
 }
 
 
 /* =========================================================
    SEARCH BOX
-   ========================================================= */
+========================================================= */
 
 .product-search-box {
-    display: flex;
-    align-items: center;
-
     width: 100%;
+
     height: 46px;
 
-    padding: 0 13px;
+    display: flex;
+
+    align-items: center;
 
     gap: 10px;
 
-    border: 1px solid #cbd5e1;
+    padding: 0 13px;
+
+    border: 1px solid var(--input-border);
+
     border-radius: 9px;
 
-    background: #ffffff;
+    background: var(--secondary-background);
 
-    transition: 0.25s ease;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.25s ease;
 }
+
 
 .product-search-box:focus-within {
-    border-color: #fbbf24;
+    border-color: var(--accent);
 
     box-shadow:
-        0 0 0 3px rgba(251, 191, 36, 0.15);
+        0 0 0 3px var(--accent-shadow);
 }
 
+
+/* =========================================================
+   SEARCH ICON
+========================================================= */
+
 .search-icon {
-    color: #64748b;
+    color: var(--secondary-text);
 
     font-size: 14px;
 
     flex-shrink: 0;
 }
 
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
 .product-search-box input {
     width: 100%;
+
     height: 100%;
 
     border: none;
+
     outline: none;
 
     background: transparent;
 
-    color: #0f172a;
+    color: var(--primary-text);
+
+    font-family: inherit;
 
     font-size: 14px;
 }
 
+
 .product-search-box input::placeholder {
-    color: #94a3b8;
+    color: var(--muted-text);
 }
+
+
+/* =========================================================
+   CLEAR SEARCH
+========================================================= */
 
 .clear-search {
     border: none;
+
     background: transparent;
 
-    color: #94a3b8;
+    color: var(--muted-text);
 
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 4px;
 
     flex-shrink: 0;
 
-    transition: 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
+
 .clear-search:hover {
-    color: #ef4444;
+    color: var(--danger);
 }
 
 
 /* =========================================================
    CATEGORY LIST
-   ========================================================= */
+========================================================= */
 
 .category-list {
     display: flex;
+
     flex-direction: column;
 
     gap: 5px;
 }
 
+
+/* =========================================================
+   CATEGORY OPTION
+========================================================= */
+
 .category-option {
     width: 100%;
+
     min-height: 43px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     padding: 10px 13px;
 
     border: none;
+
     border-radius: 8px;
 
     background: transparent;
 
-    color: #475569;
+    color: var(--secondary-text);
+
+    font-family: inherit;
 
     font-size: 14px;
+
     font-weight: 600;
 
     text-align: left;
@@ -194,24 +266,39 @@
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
+        background-color 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease;
 }
 
-.category-option:hover {
-    background: #f8fafc;
 
-    color: #0f1a2e;
+/* =========================================================
+   CATEGORY HOVER
+========================================================= */
+
+.category-option:hover {
+    background: var(--secondary-background);
+
+    color: var(--primary-text);
 }
 
-.category-option.active {
-    background: #fbbf24;
 
-    color: #0f172a;
+/* =========================================================
+   ACTIVE CATEGORY
+========================================================= */
+
+.category-option.active {
+    background: var(--accent);
+
+    color: var(--dark-button-text);
 
     font-weight: 800;
 }
+
+
+/* =========================================================
+   CATEGORY COUNT
+========================================================= */
 
 .category-count {
     min-width: 20px;
@@ -226,28 +313,41 @@
 
 /* =========================================================
    ACTIVE FILTERS
-   ========================================================= */
+========================================================= */
 
 .active-filters {
     padding-top: 22px;
 
     margin-bottom: 24px;
 
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--border-color);
 }
+
+
+/* =========================================================
+   ACTIVE FILTER TITLE
+========================================================= */
 
 .active-filter-title {
     margin-bottom: 10px;
 
-    color: #334155;
+    color: var(--primary-text);
 
     font-size: 13px;
+
     font-weight: 800;
 }
 
+
+/* =========================================================
+   FILTER TAG
+========================================================= */
+
 .filter-tag {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 10px;
@@ -258,12 +358,19 @@
 
     border-radius: 7px;
 
-    background: #f1f5f9;
+    background: var(--secondary-background);
 
-    color: #334155;
+    border: 1px solid var(--border-color);
+
+    color: var(--secondary-text);
 
     font-size: 12px;
 }
+
+
+/* =========================================================
+   FILTER TAG TEXT
+========================================================= */
 
 .filter-tag span {
     overflow: hidden;
@@ -273,68 +380,87 @@
     white-space: nowrap;
 }
 
+
+/* =========================================================
+   FILTER TAG CLOSE BUTTON
+========================================================= */
+
 .filter-tag button {
     border: none;
+
     background: transparent;
 
-    color: #64748b;
+    color: var(--secondary-text);
 
     cursor: pointer;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 2px;
 
     flex-shrink: 0;
 
-    transition: 0.2s ease;
+    transition:
+        color 0.2s ease;
 }
 
+
 .filter-tag button:hover {
-    color: #ef4444;
+    color: var(--danger);
 }
 
 
 /* =========================================================
    RESET BUTTON
-   ========================================================= */
+========================================================= */
 
 .reset-filter-button {
     width: 100%;
+
     height: 44px;
 
-    border: 1px solid #0f1a2e;
+    border: 1px solid var(--dark-button);
+
     border-radius: 8px;
 
-    background: #0f1a2e;
+    background: var(--dark-button);
 
-    color: #ffffff;
+    color: var(--dark-button-text);
+
+    font-family: inherit;
 
     font-size: 14px;
+
     font-weight: 700;
 
     cursor: pointer;
 
     transition:
-        background 0.25s ease,
+        background-color 0.25s ease,
         border-color 0.25s ease,
-        color 0.25s ease;
+        color 0.25s ease,
+        transform 0.25s ease;
 }
 
+
 .reset-filter-button:hover {
-    background: #fbbf24;
+    background: var(--accent);
 
-    border-color: #fbbf24;
+    border-color: var(--accent);
 
-    color: #0f172a;
+    color: var(--dark-button-text);
+
+    transform: translateY(-2px);
 }
 
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 991px) {
 
@@ -342,6 +468,10 @@
         position: relative;
 
         top: 0;
+
+        max-width: none;
+
+        width: 100%;
     }
 
 }
@@ -355,9 +485,11 @@
         border-radius: 12px;
     }
 
+
     .sidebar-header h2 {
         font-size: 20px;
     }
+
 
     .sidebar-section {
         margin-bottom: 24px;

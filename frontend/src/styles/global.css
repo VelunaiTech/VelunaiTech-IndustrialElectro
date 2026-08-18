@@ -1,47 +1,123 @@
-*{
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
 
-    margin:0;
-
-    padding:0;
-
-    box-sizing:border-box;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
 
-    font-family:"Segoe UI",sans-serif;
+/* =========================================================
+   HTML
+========================================================= */
 
-    background:#f8fafc;
-
+html {
+    background: var(--page-background);
+    scroll-behavior: smooth;
 }
 
-.container{
 
-    width:92%;
+/* =========================================================
+   BODY
+========================================================= */
 
-    max-width:1450px;
+body {
+    margin: 0;
 
-    margin:auto;
+    font-family: "Segoe UI", sans-serif;
 
+    background: var(--page-background);
+
+    color: var(--primary-text);
+
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
-button{
 
-    cursor:pointer;
+/* =========================================================
+   ROOT
+========================================================= */
 
+#root {
+    min-height: 100vh;
+
+    background: var(--page-background);
+
+    color: var(--primary-text);
 }
 
-img{
 
-    display:block;
+/* =========================================================
+   CONTAINER
+========================================================= */
 
-    width:100%;
+.container {
+    width: 92%;
 
+    max-width: 1450px;
+
+    margin: 0 auto;
 }
 
-a{
 
-    text-decoration:none;
+/* =========================================================
+   BUTTON
+========================================================= */
 
+button {
+    cursor: pointer;
+
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+img {
+    display: block;
+
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   THEME TRANSITION
+========================================================= */
+
+body,
+#root,
+.header,
+.products-page,
+.product-details,
+.contact-page,
+.product-card,
+.product-sidebar,
+.contact-card,
+.related-card,
+.product-image,
+.product-body,
+.contact-item,
+input,
+select,
+button {
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
 }
