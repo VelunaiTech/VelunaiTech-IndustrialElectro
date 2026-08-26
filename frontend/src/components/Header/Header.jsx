@@ -78,26 +78,7 @@ function Header() {
 
                 <div className="header-right">
 
-                    {/* LANGUAGE */}
-
-                    <div className="lang-switcher">
-
-                        <select defaultValue="English">
-
-                            <option value="English">
-                                English
-                            </option>
-
-                            <option value="Tamil">
-                                Tamil
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    {/* THEME */}
+                    {/* ================= THEME ================= */}
 
                     <button
                         type="button"
@@ -124,10 +105,10 @@ function Header() {
                     </button>
 
 
-                    {/* REQUEST MATERIAL */}
+                    {/* ================= REQUEST MATERIAL ================= */}
 
-                    <button
-                        type="button"
+                    <Link
+                        to="/request-material"
                         className="request-btn"
                     >
 
@@ -137,10 +118,10 @@ function Header() {
                             Request
                         </span>
 
-                    </button>
+                    </Link>
 
 
-                    {/* CONTACT */}
+                    {/* ================= CONTACT ================= */}
 
                     <Link
                         to="/contact"
