@@ -1,53 +1,74 @@
 import "./ProductDetails.css";
 
-import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Header from "../../components/Header/Header";
+
+import {
+    FaArrowLeft,
+    FaCheckCircle,
+    FaChevronLeft,
+    FaChevronRight,
+    FaFileDownload,
+    FaImage,
+    FaPhoneAlt,
+    FaTag,
+} from "react-icons/fa";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+import { useEffect, useState } from "react";
 
 import { getProduct } from "../../services/productService";
+
 
 function ProductDetails() {
 
     const { id } = useParams();
 
+    const navigate = useNavigate();
+
+
+    /* =========================================================
+       STATE
+    ========================================================= */
+
     const [product, setProduct] = useState(null);
+
     const [loading, setLoading] = useState(true);
-    const [selectedImage, setSelectedImage] = useState("");
 
-    const relatedProductsRef = useRef(null);
+    const [error, setError] = useState("");
 
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(0);
 
+
+    /* =========================================================
+       LOAD PRODUCT
+    ========================================================= */
 
     useEffect(() => {
 
-        async function fetchProduct() {
-
-            setLoading(true);
-
-            setProduct(null);
-
-            setSelectedImage("");
+        const loadProduct = async () => {
 
             try {
+
+                setLoading(true);
+
+                setError("");
 
                 const data = await getProduct(id);
 
                 setProduct(data);
 
-                if (data.images && data.images.length > 0) {
+                setSelectedImage(0);
 
-                    setSelectedImage(
-                        data.images[0].image
-                    );
-
-                }
-
-            } catch (error) {
+            } catch (err) {
 
                 console.error(
-                    "Error loading product:",
-                    error
+                    "Failed to load product:",
+                    err
+                );
+
+                setError(
+                    "Unable to load this product."
                 );
 
             } finally {
@@ -56,106 +77,12 @@ function ProductDetails() {
 
             }
 
-        }
+        };
 
-        fetchProduct();
+
+        loadProduct();
 
     }, [id]);
-
-
-    /* =========================================================
-       RELATED PRODUCTS CAROUSEL
-    ========================================================= */
-
-    const updateRelatedButtons = () => {
-
-        const container = relatedProductsRef.current;
-
-        if (!container) {
-            return;
-        }
-
-        setCanScrollLeft(
-            container.scrollLeft > 0
-        );
-
-        setCanScrollRight(
-            container.scrollLeft + container.clientWidth <
-            container.scrollWidth - 5
-        );
-
-    };
-
-
-    const scrollRelatedProducts = (direction) => {
-
-        const container = relatedProductsRef.current;
-
-        if (!container) {
-            return;
-        }
-
-        const card = container.querySelector(".related-card");
-
-        if (!card) {
-            return;
-        }
-
-        const cardWidth = card.offsetWidth;
-
-        const gap = 20;
-
-        const scrollAmount = cardWidth + gap;
-
-        container.scrollBy({
-
-            left:
-                direction === "left"
-                    ? -scrollAmount
-                    : scrollAmount,
-
-            behavior: "smooth"
-
-        });
-
-    };
-
-
-    /* =========================================================
-       RELATED PRODUCTS CAROUSEL INITIALIZATION
-    ========================================================= */
-
-    useEffect(() => {
-
-        const container = relatedProductsRef.current;
-
-        if (!container) {
-            return;
-        }
-
-        updateRelatedButtons();
-
-        const handleResize = () => {
-
-            updateRelatedButtons();
-
-        };
-
-        window.addEventListener(
-            "resize",
-            handleResize
-        );
-
-        return () => {
-
-            window.removeEventListener(
-                "resize",
-                handleResize
-            );
-
-        };
-
-    }, [product]);
 
 
     /* =========================================================
@@ -166,13 +93,33 @@ function ProductDetails() {
 
         return (
 
-            <section className="product-loading">
+            <>
 
-                <h2>
-                    Loading Product...
-                </h2>
+                <Header />
 
-            </section>
+                <main className="product-details-page">
+
+                    <div className="container">
+
+                        <div className="product-details-loading">
+
+                            <div className="loading-spinner"></div>
+
+                            <h2>
+                                Loading Product...
+                            </h2>
+
+                            <p>
+                                Please wait while we load the product details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </>
 
         );
 
@@ -180,331 +127,545 @@ function ProductDetails() {
 
 
     /* =========================================================
-       PRODUCT NOT FOUND
+       ERROR
     ========================================================= */
 
-    if (!product) {
+    if (error || !product) {
 
         return (
 
-            <section className="product-loading">
+            <>
 
-                <h2>
-                    Product Not Found
-                </h2>
+                <Header />
 
-            </section>
+                <main className="product-details-page">
+
+                    <div className="container">
+
+                        <div className="product-details-error">
+
+                            <div className="error-icon">
+
+                                <FaImage />
+
+                            </div>
+
+                            <h2>
+                                Product Not Found
+                            </h2>
+
+                            <p>
+                                {error ||
+                                    "The product you are looking for does not exist."}
+                            </p>
+
+                            <button
+                                type="button"
+                                className="back-products-button"
+                                onClick={() =>
+                                    navigate("/products")
+                                }
+                            >
+
+                                <FaArrowLeft />
+
+                                Back to Products
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </>
 
         );
 
     }
 
 
+    /* =========================================================
+       PRODUCT DATA
+    ========================================================= */
+
+    const images = product.images || [];
+
+    const relatedProducts =
+        product.related_products || [];
+
+    const currentImage =
+        images[selectedImage]?.image || null;
+
+
+    /* =========================================================
+       IMAGE NAVIGATION
+    ========================================================= */
+
+    const showPreviousImage = () => {
+
+        if (images.length <= 1) {
+            return;
+        }
+
+        setSelectedImage((current) =>
+            current === 0
+                ? images.length - 1
+                : current - 1
+        );
+
+    };
+
+
+    const showNextImage = () => {
+
+        if (images.length <= 1) {
+            return;
+        }
+
+        setSelectedImage((current) =>
+            current === images.length - 1
+                ? 0
+                : current + 1
+        );
+
+    };
+
+
+    /* =========================================================
+       RENDER
+    ========================================================= */
+
     return (
 
-        <section className="product-details">
+        <>
 
-            <div className="container">
+            <Header />
 
 
-                {/* =================================================
-                   PRODUCT
-                ================================================= */}
+            <main className="product-details-page">
 
-                <div className="product-layout">
+                <div className="container">
 
 
                     {/* =================================================
-                       GALLERY
+                       BREADCRUMB
                     ================================================= */}
 
-                    <div className="gallery">
+                    <div className="product-breadcrumb">
 
+                        <Link to="/">
+                            Home
+                        </Link>
 
-                        {/* ================= MAIN IMAGE ================= */}
+                        <span>/</span>
 
-                        <div className="main-image">
+                        <Link to="/products">
+                            Products
+                        </Link>
 
-                            {selectedImage ? (
+                        <span>/</span>
 
-                                <img
-                                    src={selectedImage}
-                                    alt={product.name}
-                                />
-
-                            ) : (
-
-                                <div className="no-image">
-
-                                    No Image Available
-
-                                </div>
-
-                            )}
-
-                        </div>
-
-
-                        {/* ================= THUMBNAILS ================= */}
-
-                        {product.images &&
-                            product.images.length > 0 && (
-
-                                <div className="thumbnail-list">
-
-                                    {product.images.map((img) => (
-
-                                        <img
-                                            key={img.id}
-                                            src={img.image}
-                                            alt={product.name}
-                                            className={
-                                                selectedImage === img.image
-                                                    ? "thumbnail active"
-                                                    : "thumbnail"
-                                            }
-                                            onClick={() =>
-                                                setSelectedImage(
-                                                    img.image
-                                                )
-                                            }
-                                        />
-
-                                    ))}
-
-                                </div>
-
-                            )}
-
-                    </div>
-
-
-                    {/* =================================================
-                       PRODUCT INFORMATION
-                    ================================================= */}
-
-                    <div className="product-info">
-
-
-                        {/* ================= BRAND ================= */}
-
-                        <span className="brand">
-
-                            {product.brand}
-
+                        <span className="breadcrumb-current">
+                            {product.name}
                         </span>
 
-
-                        {/* ================= NAME ================= */}
-
-                        <h1>
-
-                            {product.name}
-
-                        </h1>
+                    </div>
 
 
-                        {/* ================= CATEGORY ================= */}
+                    {/* =================================================
+                       BACK BUTTON
+                    ================================================= */}
 
-                        <p className="category">
+                    <button
+                        type="button"
+                        className="back-products-link"
+                        onClick={() =>
+                            navigate("/products")
+                        }
+                    >
 
-                            Category:
+                        <FaArrowLeft />
 
-                            <span>
+                        Back to Products
 
-                                {product.category?.name}
-
-                            </span>
-
-                        </p>
+                    </button>
 
 
-                        {/* ================= PRICE ================= */}
+                    {/* =================================================
+                       PRODUCT MAIN
+                    ================================================= */}
 
-                        <div className="price">
+                    <section className="product-details-card">
 
-                            ₹ {product.price}
+
+                        {/* =================================================
+                           IMAGE SECTION
+                        ================================================= */}
+
+                        <div className="product-gallery">
+
+
+                            {/* MAIN IMAGE */}
+
+                            <div className="product-main-image">
+
+                                {currentImage ? (
+
+                                    <img
+                                        src={currentImage}
+                                        alt={product.name}
+                                    />
+
+                                ) : (
+
+                                    <div className="product-main-placeholder">
+
+                                        <FaImage />
+
+                                        <span>
+                                            No Image Available
+                                        </span>
+
+                                    </div>
+
+                                )}
+
+
+                                {images.length > 1 && (
+
+                                    <>
+
+                                        <button
+                                            type="button"
+                                            className="gallery-arrow gallery-arrow-left"
+                                            onClick={showPreviousImage}
+                                            aria-label="Previous image"
+                                        >
+
+                                            <FaChevronLeft />
+
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            className="gallery-arrow gallery-arrow-right"
+                                            onClick={showNextImage}
+                                            aria-label="Next image"
+                                        >
+
+                                            <FaChevronRight />
+
+                                        </button>
+
+                                    </>
+
+                                )}
+
+                            </div>
+
+
+                            {/* THUMBNAILS */}
+
+                            {images.length > 0 && (
+
+                                <div className="product-thumbnails">
+
+                                    {images.map(
+                                        (image, index) => (
+
+                                            <button
+                                                type="button"
+                                                key={image.id || index}
+                                                className={
+                                                    selectedImage === index
+                                                        ? "product-thumbnail active"
+                                                        : "product-thumbnail"
+                                                }
+                                                onClick={() =>
+                                                    setSelectedImage(index)
+                                                }
+                                                aria-label={`View image ${index + 1}`}
+                                            >
+
+                                                <img
+                                                    src={image.image}
+                                                    alt={`${product.name} ${index + 1}`}
+                                                />
+
+                                            </button>
+
+                                        )
+                                    )}
+
+                                </div>
+
+                            )}
 
                         </div>
 
 
-                        {/* ================= DESCRIPTION ================= */}
+                        {/* =================================================
+                           PRODUCT INFORMATION
+                        ================================================= */}
 
-                        <p className="description">
-
-                            {product.description}
-
-                        </p>
-
-                    </div>
-
-                </div>
+                        <div className="product-information">
 
 
-                {/* =================================================
-                   RELATED PRODUCTS
-                ================================================= */}
+                            {/* CATEGORY */}
 
-                {product.related_products &&
-                    product.related_products.length > 0 && (
+                            {product.category && (
 
-                        <section className="related-products">
+                                <span className="details-category">
 
-                            <div className="container">
+                                    <FaTag />
+
+                                    {product.category.name}
+
+                                </span>
+
+                            )}
 
 
-                                {/* ================= HEADING ================= */}
+                            {/* BRAND */}
 
-                                <div className="related-heading">
+                            {product.brand && (
 
-                                    <span>
-                                        EXPLORE MORE
-                                    </span>
+                                <span className="details-brand">
+                                    {product.brand}
+                                </span>
 
-                                    <h2>
-                                        Related Products
-                                    </h2>
+                            )}
+
+
+                            {/* NAME */}
+
+                            <h1 className="details-product-name">
+                                {product.name}
+                            </h1>
+
+
+                            {/* DESCRIPTION */}
+
+                            <p className="details-description">
+                                {product.description}
+                            </p>
+
+
+                            {/* PRICE */}
+
+                            <div className="details-price-section">
+
+                                <span className="details-price-label">
+                                    Price
+                                </span>
+
+                                <div className="details-price">
+
+                                    ₹{" "}
+                                    {Number(
+                                        product.price
+                                    ).toLocaleString("en-IN")}
+
+                                </div>
+
+                            </div>
+
+
+                            {/* AVAILABILITY */}
+
+                            <div className="product-availability">
+
+                                <FaCheckCircle />
+
+                                <span>
+                                    Product available
+                                </span>
+
+                            </div>
+
+
+                            {/* ACTIONS */}
+
+                            <div className="product-detail-actions">
+
+                                <Link
+                                    to="/contact"
+                                    className="secondary-product-action"
+                                >
+
+                                    <FaPhoneAlt />
+
+                                    Contact Us
+
+                                </Link>
+
+                            </div>
+
+
+                            {/* PRODUCT NOTE */}
+
+                            <div className="product-detail-note">
+
+                                <FaFileDownload />
+
+                                <div>
+
+                                    <strong>
+                                        Need more information?
+                                    </strong>
 
                                     <p>
-                                        More products from the same category.
+                                        Contact us for product
+                                        specifications, availability,
+                                        and technical information.
                                     </p>
 
                                 </div>
 
+                            </div>
 
-                                {/* ================= CAROUSEL ================= */}
+                        </div>
 
-                                <div className="related-carousel">
-
-
-                                    {/* ================= LEFT ARROW ================= */}
-
-                                    <button
-                                        type="button"
-                                        className="related-arrow related-arrow-left"
-                                        onClick={() =>
-                                            scrollRelatedProducts("left")
-                                        }
-                                        disabled={!canScrollLeft}
-                                        aria-label="Previous related products"
-                                    >
-                                        &#10094;
-                                    </button>
+                    </section>
 
 
-                                    {/* ================= RELATED PRODUCTS ================= */}
+                    {/* =================================================
+                       DESCRIPTION SECTION
+                    ================================================= */}
 
-                                    <div
-                                        className="related-grid"
-                                        ref={relatedProductsRef}
-                                        onScroll={updateRelatedButtons}
-                                    >
+                    <section className="product-description-section">
 
-                                        {product.related_products.map(
-                                            (related) => (
+                        <div className="section-heading">
 
-                                                <article
-                                                    className="related-card"
-                                                    key={related.id}
-                                                >
+                            <span>
+                                PRODUCT INFORMATION
+                            </span>
+
+                            <h2>
+                                Product Description
+                            </h2>
+
+                        </div>
 
 
-                                                    {/* ================= IMAGE ================= */}
+                        <div className="description-content">
 
-                                                    <div className="related-image">
+                            <p>
+                                {product.description}
+                            </p>
 
-                                                        {related.image ? (
+                        </div>
 
-                                                            <img
-                                                                src={related.image}
-                                                                alt={related.name}
-                                                            />
+                    </section>
 
-                                                        ) : (
 
-                                                            <div className="related-no-image">
+                    {/* =================================================
+                       RELATED PRODUCTS
+                    ================================================= */}
 
-                                                                No Image Available
+                    {relatedProducts.length > 0 && (
 
-                                                            </div>
+                        <section className="related-products-section">
 
+                            <div className="section-heading">
+
+                                <span>
+                                    YOU MAY ALSO LIKE
+                                </span>
+
+                                <h2>
+                                    Related Products
+                                </h2>
+
+                                <p>
+                                    Explore other products from
+                                    the same category.
+                                </p>
+
+                            </div>
+
+
+                            <div className="related-products-grid">
+
+                                {relatedProducts.map(
+                                    (relatedProduct) => (
+
+                                        <article
+                                            className="related-product-card"
+                                            key={relatedProduct.id}
+                                        >
+
+                                            <Link
+                                                to={`/product/${relatedProduct.id}`}
+                                                className="related-product-image"
+                                            >
+
+                                                {relatedProduct.image ? (
+
+                                                    <img
+                                                        src={
+                                                            relatedProduct.image
+                                                        }
+                                                        alt={
+                                                            relatedProduct.name
+                                                        }
+                                                    />
+
+                                                ) : (
+
+                                                    <div className="related-image-placeholder">
+
+                                                        <FaImage />
+
+                                                    </div>
+
+                                                )}
+
+                                            </Link>
+
+
+                                            <div className="related-product-body">
+
+                                                <span className="related-product-brand">
+                                                    {relatedProduct.brand}
+                                                </span>
+
+
+                                                <h3>
+                                                    {relatedProduct.name}
+                                                </h3>
+
+
+                                                <div className="related-product-bottom">
+
+                                                    <strong>
+                                                        ₹{" "}
+                                                        {Number(
+                                                            relatedProduct.price
+                                                        ).toLocaleString(
+                                                            "en-IN"
                                                         )}
-
-                                                    </div>
-
-
-                                                    {/* ================= CONTENT ================= */}
-
-                                                    <div className="related-content">
+                                                    </strong>
 
 
-                                                        {/* ================= BRAND ================= */}
+                                                    <Link
+                                                        to={`/product/${relatedProduct.id}`}
+                                                        className="related-view-button"
+                                                    >
+                                                        View
+                                                    </Link>
 
-                                                        <span className="related-brand">
+                                                </div>
 
-                                                            {related.brand}
+                                            </div>
 
-                                                        </span>
+                                        </article>
 
-
-                                                        {/* ================= NAME ================= */}
-
-                                                        <h3>
-
-                                                            {related.name}
-
-                                                        </h3>
-
-
-                                                        {/* ================= PRICE ================= */}
-
-                                                        <div className="related-price">
-
-                                                            ₹{" "}
-
-                                                            {Number(
-                                                                related.price
-                                                            ).toLocaleString(
-                                                                "en-IN"
-                                                            )}
-
-                                                        </div>
-
-
-                                                        {/* ================= VIEW PRODUCT ================= */}
-
-                                                        <Link
-                                                            to={`/product/${related.id}`}
-                                                            className="view-product-btn"
-                                                        >
-                                                            View Product
-                                                        </Link>
-
-                                                    </div>
-
-                                                </article>
-
-                                            )
-                                        )}
-
-                                    </div>
-
-
-                                    {/* ================= RIGHT ARROW ================= */}
-
-                                    <button
-                                        type="button"
-                                        className="related-arrow related-arrow-right"
-                                        onClick={() =>
-                                            scrollRelatedProducts("right")
-                                        }
-                                        disabled={!canScrollRight}
-                                        aria-label="Next related products"
-                                    >
-                                        &#10095;
-                                    </button>
-
-                                </div>
+                                    )
+                                )}
 
                             </div>
 
@@ -512,12 +673,15 @@ function ProductDetails() {
 
                     )}
 
-            </div>
+                </div>
 
-        </section>
+            </main>
+
+        </>
 
     );
 
 }
+
 
 export default ProductDetails;

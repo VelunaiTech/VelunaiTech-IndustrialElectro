@@ -3,12 +3,11 @@
 ========================================================= */
 
 .contact-page {
-
     min-height: calc(100vh - 85px);
 
     padding: 70px 0;
 
-    background: #f5f7fa;
+    background: var(--page-background);
 
     display: flex;
 
@@ -21,7 +20,6 @@
 ========================================================= */
 
 .contact-card {
-
     width: 100%;
 
     max-width: 850px;
@@ -30,15 +28,14 @@
 
     padding: 45px;
 
-    background: #ffffff;
+    background: var(--card-background);
 
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 
     border-radius: 22px;
 
     box-shadow:
-        0 15px 45px rgba(15, 26, 46, 0.09);
-
+        0 15px 45px var(--shadow-color);
 }
 
 
@@ -47,18 +44,15 @@
 ========================================================= */
 
 .owner-profile {
-
     text-align: center;
 
     padding-bottom: 30px;
 
-    border-bottom: 1px solid #e2e8f0;
-
+    border-bottom: 1px solid var(--border-color);
 }
 
 
 .owner-image {
-
     width: 120px;
 
     height: 120px;
@@ -69,15 +63,13 @@
 
     overflow: hidden;
 
-    border: 5px solid #fbbf24;
+    border: 5px solid var(--accent);
 
-    background: #f1f5f9;
-
+    background: var(--image-background);
 }
 
 
 .owner-image img {
-
     width: 100%;
 
     height: 100%;
@@ -85,12 +77,10 @@
     display: block;
 
     object-fit: cover;
-
 }
 
 
 .owner-no-image {
-
     width: 100%;
 
     height: 100%;
@@ -101,40 +91,35 @@
 
     justify-content: center;
 
-    color: #64748b;
+    color: var(--secondary-text);
 
     font-size: 14px;
 
     font-weight: 700;
-
 }
 
 
 .owner-profile h1 {
-
     margin: 0;
 
-    color: #0f1a2e;
+    color: var(--primary-text);
 
     font-size: 30px;
 
     line-height: 1.2;
 
     font-weight: 800;
-
 }
 
 
 .owner-role {
-
     margin: 7px 0 0;
 
-    color: #64748b;
+    color: var(--secondary-text);
 
     font-size: 14px;
 
     font-weight: 600;
-
 }
 
 
@@ -143,7 +128,6 @@
 ========================================================= */
 
 .contact-details {
-
     padding: 30px 0;
 
     display: flex;
@@ -151,12 +135,10 @@
     flex-direction: column;
 
     gap: 16px;
-
 }
 
 
 .contact-item {
-
     display: flex;
 
     align-items: center;
@@ -169,13 +151,17 @@
 
     border-radius: 12px;
 
-    background: #f8fafc;
+    background: var(--contact-item-background);
 
+    border: 1px solid transparent;
 }
 
 
-.contact-icon {
+/* =========================================================
+   CONTACT ICON
+========================================================= */
 
+.contact-icon {
     width: 44px;
 
     height: 44px;
@@ -190,29 +176,25 @@
 
     border-radius: 10px;
 
-    background: #0f1a2e;
+    background: var(--contact-icon-background);
 
-    color: #fbbf24;
+    color: var(--contact-icon-color);
 
     font-size: 16px;
-
 }
 
 
 .contact-text {
-
     min-width: 0;
-
 }
 
 
 .contact-item span {
-
     display: block;
 
     margin-bottom: 4px;
 
-    color: #64748b;
+    color: var(--secondary-text);
 
     font-size: 12px;
 
@@ -221,17 +203,15 @@
     text-transform: uppercase;
 
     letter-spacing: 0.05em;
-
 }
 
 
 .contact-item a {
-
     display: inline-block;
 
     margin: 0;
 
-    color: #0f1a2e;
+    color: var(--primary-text);
 
     font-size: 15px;
 
@@ -242,15 +222,13 @@
     line-height: 1.5;
 
     word-break: break-word;
-
 }
 
 
 .contact-item p {
-
     margin: 0;
 
-    color: #0f1a2e;
+    color: var(--primary-text);
 
     font-size: 15px;
 
@@ -259,14 +237,11 @@
     line-height: 1.5;
 
     word-break: break-word;
-
 }
 
 
 .contact-item a:hover {
-
-    color: #b77900;
-
+    color: var(--accent-dark);
 }
 
 
@@ -275,18 +250,15 @@
 ========================================================= */
 
 .contact-actions {
-
     display: grid;
 
     grid-template-columns: repeat(3, 1fr);
 
     gap: 15px;
-
 }
 
 
 .contact-action {
-
     min-height: 50px;
 
     display: flex;
@@ -311,31 +283,24 @@
         transform 0.25s ease,
         box-shadow 0.25s ease,
         opacity 0.25s ease;
-
 }
 
 
 .contact-action:hover {
-
     transform: translateY(-3px);
 
     box-shadow:
-        0 8px 20px rgba(15, 26, 46, 0.12);
-
+        0 8px 20px var(--shadow-color);
 }
 
 
 .contact-action:active {
-
     transform: translateY(-1px);
-
 }
 
 
 .contact-action svg {
-
     font-size: 17px;
-
 }
 
 
@@ -344,20 +309,16 @@
 ========================================================= */
 
 .contact-action.whatsapp {
-
-    background: #25d366;
+    background: var(--whatsapp-background);
 
     color: #ffffff;
-
 }
 
 
 .contact-action.whatsapp:hover {
-
-    background: #20bd5a;
+    background: var(--whatsapp-hover);
 
     color: #ffffff;
-
 }
 
 
@@ -366,20 +327,16 @@
 ========================================================= */
 
 .contact-action.email {
-
     background: #0f1a2e;
 
     color: #ffffff;
-
 }
 
 
 .contact-action.email:hover {
-
     background: #1e293b;
 
     color: #ffffff;
-
 }
 
 
@@ -388,20 +345,16 @@
 ========================================================= */
 
 .contact-action.location {
-
-    background: #fbbf24;
+    background: var(--accent);
 
     color: #0f172a;
-
 }
 
 
 .contact-action.location:hover {
-
     background: #f59e0b;
 
     color: #0f172a;
-
 }
 
 
@@ -410,7 +363,6 @@
 ========================================================= */
 
 .contact-loading {
-
     width: 100%;
 
     min-height: 450px;
@@ -422,20 +374,17 @@
     justify-content: center;
 
     flex-direction: column;
-
 }
 
 
 .contact-loading h2 {
-
     margin: 0;
 
-    color: #0f1a2e;
+    color: var(--primary-text);
 
     font-size: 24px;
 
     text-align: center;
-
 }
 
 
@@ -446,45 +395,35 @@
 @media (max-width: 768px) {
 
     .contact-page {
-
         min-height: auto;
 
         padding: 50px 20px;
 
         align-items: flex-start;
-
     }
 
 
     .contact-card {
-
         padding: 35px 25px;
 
         border-radius: 18px;
-
     }
 
 
     .owner-image {
-
         width: 110px;
 
         height: 110px;
-
     }
 
 
     .owner-profile h1 {
-
         font-size: 27px;
-
     }
 
 
     .contact-actions {
-
         grid-template-columns: 1fr;
-
     }
 
 }
@@ -497,83 +436,64 @@
 @media (max-width: 480px) {
 
     .contact-page {
-
         padding: 35px 15px;
-
     }
 
 
     .contact-card {
-
         padding: 30px 18px;
 
         border-radius: 16px;
-
     }
 
 
     .owner-image {
-
         width: 100px;
 
         height: 100px;
 
         border-width: 4px;
-
     }
 
 
     .owner-profile h1 {
-
         font-size: 24px;
-
     }
 
 
     .contact-details {
-
         padding: 25px 0;
 
         gap: 12px;
-
     }
 
 
     .contact-item {
-
         align-items: flex-start;
 
         gap: 12px;
 
         padding: 13px;
-
     }
 
 
     .contact-icon {
-
         width: 40px;
 
         height: 40px;
 
         font-size: 15px;
-
     }
 
 
     .contact-item a,
-
     .contact-item p {
-
         font-size: 14px;
-
     }
 
 
     .contact-action {
-
         min-height: 48px;
-
     }
 
 }

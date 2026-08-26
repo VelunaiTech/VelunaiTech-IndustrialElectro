@@ -35,6 +35,19 @@
     --danger: #ef4444;
 
     --shadow-color: rgba(15, 26, 46, 0.09);
+
+
+    /* ================= CONTACT ================= */
+
+    --contact-icon-background: #0f1a2e;
+
+    --contact-icon-color: #fbbf24;
+
+    --contact-item-background: #f8fafc;
+
+    --whatsapp-background: #25d366;
+
+    --whatsapp-hover: #20bd5a;
 }
 
 
@@ -73,4 +86,17 @@
     --danger: #f87171;
 
     --shadow-color: rgba(0, 0, 0, 0.35);
+
+
+    /* ================= CONTACT ================= */
+
+    --contact-icon-background: #0f1a2e;
+
+    --contact-icon-color: #fbbf24;
+
+    --contact-item-background: #172033;
+
+    --whatsapp-background: #25d366;
+
+    --whatsapp-hover: #20bd5a;
 }
